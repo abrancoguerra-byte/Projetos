@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../led"
+		},
+		{
+			"name": "led_uno",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
