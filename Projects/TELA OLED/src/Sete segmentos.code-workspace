@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../../../PlatformIO/Projects/Sete segmentos"
+		},
+		{
+			"name": "teste",
+			"path": "../../teste"
+		},
+		{
+			"name": "TELA OLED",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
