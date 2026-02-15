@@ -1,22 +1,39 @@
-#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
+#define SCREEN_WIDTH 128 
+#define SCREEN_HEIGHT 64 
+#define OLED_RESET    -1 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// Pinos do Joystick
 const int pinX = A0;
 const int pinY = A1;
-const int pinSW = 2;
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(pinSW, INPUT_PULLUP); // Ativa resistor interno para o botão
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    for(;;);
+  }
+  display.clearDisplay();
 }
 
 void loop() {
-  int xValue = analogRead(pinX);
-  int yValue = analogRead(pinY);
-  int swValue = digitalRead(pinSW);
+  // Lê os valores analógicos (0 a 1023)
+  int leituraX = analogRead(pinX);
+  int leituraY = analogRead(pinY);
 
-  Serial.print("X: "); Serial.print(xValue);
-  Serial.print(" | Y: "); Serial.print(yValue);
-  Serial.print(" | Botao: "); Serial.println(swValue == LOW ? "PRESSIONADO" : "-");
+  // Mapeia os valores para o tamanho da tela
+  // Invertemos o mapeamento se o movimento estiver trocado
+  int x = map(leituraX, 0, 1023, 0, SCREEN_WIDTH);
+  int y = map(leituraY, 0, 1023, 0, SCREEN_HEIGHT);
 
-  delay(100); // Para não inundar o Monitor Serial no Arzopa
+  display.clearDisplay(); // Limpa a tela para o próximo frame
+  
+  // Desenha a bola (Círculo preenchido)
+  // Parâmetros: x, y, raio, cor
+  display.fillCircle(x, y, 5, SSD1306_WHITE); 
+  
+  display.display(); // Atualiza a tela
+  delay(10); // Ajusta a sensibilidade/velocidade
 }
